@@ -1,0 +1,30 @@
+name: Windows validation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run test:windows
+      - name: Validate packed npx executable
+        shell: pwsh
+        run: |
+          $archive = (npm pack --json | ConvertFrom-Json)[0].filename
+          if (-not $archive) { throw 'npm pack did not produce an archive.' }
+          npx --yes --package ".\$archive" agility-mcp --version
+          if ($LASTEXITCODE -ne 0) { throw 'Packed npx command failed.' }

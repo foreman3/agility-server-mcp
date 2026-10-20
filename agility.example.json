@@ -1,0 +1,11 @@
+{
+  "baseUrl": "https://your-server/YourAgilityInstance",
+  "authMode": "token",
+  "restEndpoint": "rest-1.v1",
+  "enableWrites": false,
+  "allowOperations": [],
+  "timeoutMs": 30000,
+  "retries": 2,
+  "maxResponseBytes": 4194304,
+  "maxConcurrency": 4
+}

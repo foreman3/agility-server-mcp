@@ -1,0 +1,2543 @@
+[
+  {
+    "args": {
+      "oid": "Story:10",
+      "pageSize": 1
+    },
+    "result": {
+      "item": {
+        "oid": "Story:10",
+        "attributes": {
+          "Name": "Implement UI",
+          "Number": "S-10",
+          "Description": "Detailed description",
+          "Estimate": "5",
+          "Custom_Impact": "High",
+          "Super.Name": "Feature",
+          "Super.Number": "E-2"
+        },
+        "relations": {
+          "Super": [
+            {
+              "oid": "Epic:2",
+              "attributes": {
+                "Name": "Feature"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "oid": "Epic:2",
+          "id": "Epic:2",
+          "name": "Feature",
+          "number": "E-2",
+          "relation": "Super"
+        },
+        "parentId": "Epic:2",
+        "parentName": "Feature",
+        "parentNumber": "E-2",
+        "parentStatus": "resolved"
+      },
+      "metadata": {
+        "assetType": "Story",
+        "baseType": "PrimaryWorkitem",
+        "fields": {
+          "Name": {
+            "name": "Name",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Description": {
+            "name": "Description",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Number": {
+            "name": "Number",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Super": {
+            "name": "Super",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false,
+            "targetType": "Epic",
+            "reciprocal": "Subs"
+          },
+          "Estimate": {
+            "name": "Estimate",
+            "type": "Number",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Dependencies": {
+            "name": "Dependencies",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "PrimaryWorkitem",
+            "reciprocal": "Dependants"
+          },
+          "Dependants": {
+            "name": "Dependants",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "PrimaryWorkitem",
+            "reciprocal": "Dependencies"
+          },
+          "BlockingIssues": {
+            "name": "BlockingIssues",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "Issue",
+            "reciprocal": "BlockedPrimaryWorkitems"
+          },
+          "Custom_Impact": {
+            "name": "Custom_Impact",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": true
+          }
+        },
+        "operations": [
+          "Close"
+        ],
+        "version": "test",
+        "inheritance": [
+          "Story",
+          "PrimaryWorkitem",
+          "Workitem",
+          "BaseAsset"
+        ]
+      },
+      "metadataStatus": "available",
+      "hierarchy": {
+        "parent": {
+          "oid": "Epic:2",
+          "id": "Epic:2",
+          "name": "Feature",
+          "number": "E-2",
+          "relation": "Super"
+        },
+        "ancestors": [
+          {
+            "oid": "Epic:2",
+            "assetType": "Epic",
+            "name": "Feature",
+            "number": "E-2",
+            "parent": {
+              "oid": "Epic:1",
+              "id": "Epic:1",
+              "name": "Root initiative",
+              "number": "E-1",
+              "relation": "Super"
+            },
+            "parentId": "Epic:1",
+            "parentName": "Root initiative",
+            "parentStatus": "resolved",
+            "distance": 1
+          },
+          {
+            "oid": "Epic:1",
+            "assetType": "Epic",
+            "name": "Root initiative",
+            "number": "E-1",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none",
+            "distance": 2
+          }
+        ],
+        "descendants": []
+      },
+      "dependencies": {
+        "semantics": "Edges point from prerequisite to dependent; upstream items must finish before this item, downstream items depend on it.",
+        "scope": "explicit_relationships; implicit inherited constraints are not synthesized",
+        "upstream": [
+          {
+            "oid": "Story:20",
+            "assetType": "Story",
+            "name": "Build API",
+            "number": "S-20",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved",
+            "distance": 1
+          },
+          {
+            "oid": "Defect:30",
+            "assetType": "Defect",
+            "name": "Fix auth",
+            "number": "D-30",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved",
+            "distance": 1
+          }
+        ],
+        "downstream": [
+          {
+            "oid": "Story:40",
+            "assetType": "Story",
+            "name": "Integration",
+            "number": "S-40",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none",
+            "distance": 1
+          },
+          {
+            "oid": "Story:50",
+            "assetType": "Story",
+            "name": "Infra",
+            "number": "S-50",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none",
+            "distance": 1
+          }
+        ],
+        "blockingIssues": [
+          {
+            "oid": "Issue:5",
+            "assetType": "Issue",
+            "name": "Access blocker",
+            "number": "I-5",
+            "distance": 1
+          }
+        ]
+      },
+      "impact": {
+        "semantics": "Explicit dependency edges only; paths are evidence in graph.edges.",
+        "affected": [
+          {
+            "oid": "Story:40",
+            "distance": 1,
+            "path": [
+              "Story:10",
+              "Story:40"
+            ]
+          },
+          {
+            "oid": "Story:50",
+            "distance": 1,
+            "path": [
+              "Story:10",
+              "Story:50"
+            ]
+          }
+        ],
+        "blockingChains": [
+          {
+            "oid": "Defect:30",
+            "distance": 1,
+            "path": [
+              "Defect:30",
+              "Story:10"
+            ]
+          },
+          {
+            "oid": "Story:20",
+            "distance": 1,
+            "path": [
+              "Story:20",
+              "Story:10"
+            ]
+          }
+        ],
+        "directDependants": [
+          "Story:40",
+          "Story:50"
+        ],
+        "cycles": [],
+        "completeWithinRequestedDepth": true
+      },
+      "graph": {
+        "nodes": [
+          {
+            "oid": "Story:10",
+            "assetType": "Story",
+            "name": "Implement UI",
+            "number": "S-10",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Epic:2",
+            "assetType": "Epic",
+            "name": "Feature",
+            "number": "E-2",
+            "parent": {
+              "oid": "Epic:1",
+              "id": "Epic:1",
+              "name": "Root initiative",
+              "number": "E-1",
+              "relation": "Super"
+            },
+            "parentId": "Epic:1",
+            "parentName": "Root initiative",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Story:20",
+            "assetType": "Story",
+            "name": "Build API",
+            "number": "S-20",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Story:40",
+            "assetType": "Story",
+            "name": "Integration",
+            "number": "S-40",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none"
+          },
+          {
+            "oid": "Issue:5",
+            "assetType": "Issue",
+            "name": "Access blocker",
+            "number": "I-5"
+          },
+          {
+            "oid": "Defect:30",
+            "assetType": "Defect",
+            "name": "Fix auth",
+            "number": "D-30",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Story:50",
+            "assetType": "Story",
+            "name": "Infra",
+            "number": "S-50",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none"
+          },
+          {
+            "oid": "Epic:1",
+            "assetType": "Epic",
+            "name": "Root initiative",
+            "number": "E-1",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none"
+          }
+        ],
+        "edges": [
+          {
+            "from": "Epic:2",
+            "to": "Story:10",
+            "kind": "hierarchy"
+          },
+          {
+            "from": "Story:20",
+            "to": "Story:10",
+            "kind": "dependency"
+          },
+          {
+            "from": "Story:10",
+            "to": "Story:40",
+            "kind": "dependency"
+          },
+          {
+            "from": "Issue:5",
+            "to": "Story:10",
+            "kind": "blocker"
+          },
+          {
+            "from": "Defect:30",
+            "to": "Story:10",
+            "kind": "dependency"
+          },
+          {
+            "from": "Story:10",
+            "to": "Story:50",
+            "kind": "dependency"
+          },
+          {
+            "from": "Epic:1",
+            "to": "Epic:2",
+            "kind": "hierarchy"
+          }
+        ],
+        "cycles": []
+      },
+      "coverage": [
+        {
+          "oid": "Story:10",
+          "direction": "ancestors",
+          "relation": "Super",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Story:10",
+          "direction": "descendants",
+          "relation": "Subs",
+          "fetched": 0,
+          "status": "unsupported",
+          "nextStart": null,
+          "reason": "Relationship is not defined by this instance metadata."
+        },
+        {
+          "oid": "Story:10",
+          "direction": "upstream",
+          "relation": "Dependencies",
+          "fetched": 2,
+          "status": "complete",
+          "nextStart": null,
+          "total": 2,
+          "continuation": {
+            "tool": "agility_related_items",
+            "arguments": {
+              "oid": "Story:10",
+              "relation": "Dependencies",
+              "pageSize": 1,
+              "start": 1
+            }
+          }
+        },
+        {
+          "oid": "Story:10",
+          "direction": "downstream",
+          "relation": "Dependants",
+          "fetched": 2,
+          "status": "complete",
+          "nextStart": null,
+          "total": 2,
+          "continuation": {
+            "tool": "agility_related_items",
+            "arguments": {
+              "oid": "Story:10",
+              "relation": "Dependants",
+              "pageSize": 1,
+              "start": 1
+            }
+          }
+        },
+        {
+          "oid": "Story:10",
+          "direction": "blockingIssues",
+          "relation": "BlockingIssues",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Epic:2",
+          "direction": "ancestors",
+          "relation": "Super",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        }
+      ],
+      "warnings": [],
+      "traversal": {
+        "completeWithinRequestedDepth": true,
+        "truncated": false,
+        "reasons": [],
+        "pending": [],
+        "requests": 14,
+        "permissionScope": "visible_to_current_user",
+        "limits": {
+          "hierarchyDepth": 2,
+          "dependencyDepth": 1,
+          "pageSize": 1,
+          "maxNodes": 100,
+          "maxEdges": 500,
+          "maxRequests": 80,
+          "maxDurationMs": 30000
+        },
+        "consistency": "live_nontransactional; concurrent changes and account visibility can affect results",
+        "depthBoundaries": [
+          {
+            "direction": "ancestors",
+            "depth": 2,
+            "unexpanded": [
+              "Epic:1"
+            ]
+          },
+          {
+            "direction": "descendants",
+            "depth": 2,
+            "unexpanded": []
+          },
+          {
+            "direction": "upstream",
+            "depth": 1,
+            "unexpanded": [
+              "Story:20",
+              "Defect:30"
+            ]
+          },
+          {
+            "direction": "downstream",
+            "depth": 1,
+            "unexpanded": [
+              "Story:40",
+              "Story:50"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "args": {
+      "oid": "Epic:1",
+      "hierarchyDepth": 2
+    },
+    "result": {
+      "item": {
+        "oid": "Epic:1",
+        "attributes": {
+          "Name": "Root initiative",
+          "Number": "E-1",
+          "Description": "",
+          "Super.Name": "",
+          "Super.Number": ""
+        },
+        "relations": {
+          "Super": []
+        },
+        "parent": null,
+        "parentId": null,
+        "parentName": null,
+        "parentNumber": null,
+        "parentStatus": "none"
+      },
+      "metadata": {
+        "assetType": "Epic",
+        "baseType": "Workitem",
+        "fields": {
+          "Name": {
+            "name": "Name",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Description": {
+            "name": "Description",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Number": {
+            "name": "Number",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Super": {
+            "name": "Super",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false,
+            "targetType": "Epic",
+            "reciprocal": "Subs"
+          },
+          "Subs": {
+            "name": "Subs",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "Workitem",
+            "reciprocal": "Super"
+          },
+          "Dependencies": {
+            "name": "Dependencies",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "Epic",
+            "reciprocal": "Dependants"
+          },
+          "Dependants": {
+            "name": "Dependants",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "Epic",
+            "reciprocal": "Dependencies"
+          }
+        },
+        "operations": [],
+        "version": "test",
+        "inheritance": [
+          "Epic",
+          "Workitem",
+          "BaseAsset"
+        ]
+      },
+      "metadataStatus": "available",
+      "hierarchy": {
+        "parent": null,
+        "ancestors": [],
+        "descendants": [
+          {
+            "oid": "Epic:2",
+            "assetType": "Epic",
+            "name": "Feature",
+            "number": "E-2",
+            "parent": {
+              "oid": "Epic:1",
+              "id": "Epic:1",
+              "name": "Root initiative",
+              "number": "E-1",
+              "relation": "Super"
+            },
+            "parentId": "Epic:1",
+            "parentName": "Root initiative",
+            "parentStatus": "resolved",
+            "distance": 1
+          },
+          {
+            "oid": "Story:10",
+            "assetType": "Story",
+            "name": "Implement UI",
+            "number": "S-10",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved",
+            "distance": 2
+          },
+          {
+            "oid": "Story:20",
+            "assetType": "Story",
+            "name": "Build API",
+            "number": "S-20",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved",
+            "distance": 2
+          },
+          {
+            "oid": "Defect:30",
+            "assetType": "Defect",
+            "name": "Fix auth",
+            "number": "D-30",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved",
+            "distance": 2
+          }
+        ]
+      },
+      "dependencies": {
+        "semantics": "Edges point from prerequisite to dependent; upstream items must finish before this item, downstream items depend on it.",
+        "scope": "explicit_relationships; implicit inherited constraints are not synthesized",
+        "upstream": [],
+        "downstream": [],
+        "blockingIssues": []
+      },
+      "impact": {
+        "semantics": "Explicit dependency edges only; paths are evidence in graph.edges.",
+        "affected": [],
+        "blockingChains": [],
+        "directDependants": [],
+        "cycles": [],
+        "completeWithinRequestedDepth": true
+      },
+      "graph": {
+        "nodes": [
+          {
+            "oid": "Epic:1",
+            "assetType": "Epic",
+            "name": "Root initiative",
+            "number": "E-1",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none"
+          },
+          {
+            "oid": "Epic:2",
+            "assetType": "Epic",
+            "name": "Feature",
+            "number": "E-2",
+            "parent": {
+              "oid": "Epic:1",
+              "id": "Epic:1",
+              "name": "Root initiative",
+              "number": "E-1",
+              "relation": "Super"
+            },
+            "parentId": "Epic:1",
+            "parentName": "Root initiative",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Story:10",
+            "assetType": "Story",
+            "name": "Implement UI",
+            "number": "S-10",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Story:20",
+            "assetType": "Story",
+            "name": "Build API",
+            "number": "S-20",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Defect:30",
+            "assetType": "Defect",
+            "name": "Fix auth",
+            "number": "D-30",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          }
+        ],
+        "edges": [
+          {
+            "from": "Epic:1",
+            "to": "Epic:2",
+            "kind": "hierarchy"
+          },
+          {
+            "from": "Epic:2",
+            "to": "Story:10",
+            "kind": "hierarchy"
+          },
+          {
+            "from": "Epic:2",
+            "to": "Story:20",
+            "kind": "hierarchy"
+          },
+          {
+            "from": "Epic:2",
+            "to": "Defect:30",
+            "kind": "hierarchy"
+          }
+        ],
+        "cycles": []
+      },
+      "coverage": [
+        {
+          "oid": "Epic:1",
+          "direction": "ancestors",
+          "relation": "Super",
+          "fetched": 0,
+          "status": "complete",
+          "nextStart": null,
+          "total": 0
+        },
+        {
+          "oid": "Epic:1",
+          "direction": "descendants",
+          "relation": "Subs",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Epic:1",
+          "direction": "upstream",
+          "relation": "Dependencies",
+          "fetched": 0,
+          "status": "complete",
+          "nextStart": null,
+          "total": 0
+        },
+        {
+          "oid": "Epic:1",
+          "direction": "downstream",
+          "relation": "Dependants",
+          "fetched": 0,
+          "status": "complete",
+          "nextStart": null,
+          "total": 0
+        },
+        {
+          "oid": "Epic:1",
+          "direction": "blockingIssues",
+          "relation": "BlockingIssues",
+          "fetched": 0,
+          "status": "unsupported",
+          "nextStart": null,
+          "reason": "Relationship is not defined by this instance metadata."
+        },
+        {
+          "oid": "Epic:2",
+          "direction": "descendants",
+          "relation": "Subs",
+          "fetched": 3,
+          "status": "complete",
+          "nextStart": null,
+          "total": 3
+        }
+      ],
+      "warnings": [],
+      "traversal": {
+        "completeWithinRequestedDepth": true,
+        "truncated": false,
+        "reasons": [],
+        "pending": [],
+        "requests": 9,
+        "permissionScope": "visible_to_current_user",
+        "limits": {
+          "hierarchyDepth": 2,
+          "dependencyDepth": 1,
+          "pageSize": 50,
+          "maxNodes": 100,
+          "maxEdges": 500,
+          "maxRequests": 80,
+          "maxDurationMs": 30000
+        },
+        "consistency": "live_nontransactional; concurrent changes and account visibility can affect results",
+        "depthBoundaries": [
+          {
+            "direction": "ancestors",
+            "depth": 2,
+            "unexpanded": []
+          },
+          {
+            "direction": "descendants",
+            "depth": 2,
+            "unexpanded": [
+              "Story:10",
+              "Story:20",
+              "Defect:30"
+            ]
+          },
+          {
+            "direction": "upstream",
+            "depth": 1,
+            "unexpanded": []
+          },
+          {
+            "direction": "downstream",
+            "depth": 1,
+            "unexpanded": []
+          }
+        ]
+      }
+    }
+  },
+  {
+    "args": {
+      "oid": "Story:10",
+      "dependencyDepth": 5
+    },
+    "result": {
+      "item": {
+        "oid": "Story:10",
+        "attributes": {
+          "Name": "Implement UI",
+          "Number": "S-10",
+          "Description": "Detailed description",
+          "Estimate": "5",
+          "Custom_Impact": "High",
+          "Super.Name": "Feature",
+          "Super.Number": "E-2"
+        },
+        "relations": {
+          "Super": [
+            {
+              "oid": "Epic:2",
+              "attributes": {
+                "Name": "Feature"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "oid": "Epic:2",
+          "id": "Epic:2",
+          "name": "Feature",
+          "number": "E-2",
+          "relation": "Super"
+        },
+        "parentId": "Epic:2",
+        "parentName": "Feature",
+        "parentNumber": "E-2",
+        "parentStatus": "resolved"
+      },
+      "metadata": {
+        "assetType": "Story",
+        "baseType": "PrimaryWorkitem",
+        "fields": {
+          "Name": {
+            "name": "Name",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Description": {
+            "name": "Description",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Number": {
+            "name": "Number",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Super": {
+            "name": "Super",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false,
+            "targetType": "Epic",
+            "reciprocal": "Subs"
+          },
+          "Estimate": {
+            "name": "Estimate",
+            "type": "Number",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Dependencies": {
+            "name": "Dependencies",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "PrimaryWorkitem",
+            "reciprocal": "Dependants"
+          },
+          "Dependants": {
+            "name": "Dependants",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "PrimaryWorkitem",
+            "reciprocal": "Dependencies"
+          },
+          "BlockingIssues": {
+            "name": "BlockingIssues",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "Issue",
+            "reciprocal": "BlockedPrimaryWorkitems"
+          },
+          "Custom_Impact": {
+            "name": "Custom_Impact",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": true
+          }
+        },
+        "operations": [
+          "Close"
+        ],
+        "version": "test",
+        "inheritance": [
+          "Story",
+          "PrimaryWorkitem",
+          "Workitem",
+          "BaseAsset"
+        ]
+      },
+      "metadataStatus": "available",
+      "hierarchy": {
+        "parent": {
+          "oid": "Epic:2",
+          "id": "Epic:2",
+          "name": "Feature",
+          "number": "E-2",
+          "relation": "Super"
+        },
+        "ancestors": [
+          {
+            "oid": "Epic:2",
+            "assetType": "Epic",
+            "name": "Feature",
+            "number": "E-2",
+            "parent": {
+              "oid": "Epic:1",
+              "id": "Epic:1",
+              "name": "Root initiative",
+              "number": "E-1",
+              "relation": "Super"
+            },
+            "parentId": "Epic:1",
+            "parentName": "Root initiative",
+            "parentStatus": "resolved",
+            "distance": 1
+          },
+          {
+            "oid": "Epic:1",
+            "assetType": "Epic",
+            "name": "Root initiative",
+            "number": "E-1",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none",
+            "distance": 2
+          }
+        ],
+        "descendants": []
+      },
+      "dependencies": {
+        "semantics": "Edges point from prerequisite to dependent; upstream items must finish before this item, downstream items depend on it.",
+        "scope": "explicit_relationships; implicit inherited constraints are not synthesized",
+        "upstream": [
+          {
+            "oid": "Story:20",
+            "assetType": "Story",
+            "name": "Build API",
+            "number": "S-20",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved",
+            "distance": 1
+          },
+          {
+            "oid": "Defect:30",
+            "assetType": "Defect",
+            "name": "Fix auth",
+            "number": "D-30",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved",
+            "distance": 1
+          },
+          {
+            "oid": "Story:50",
+            "assetType": "Story",
+            "name": "Infra",
+            "number": "S-50",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none",
+            "distance": 2
+          }
+        ],
+        "downstream": [
+          {
+            "oid": "Story:40",
+            "assetType": "Story",
+            "name": "Integration",
+            "number": "S-40",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none",
+            "distance": 1
+          },
+          {
+            "oid": "Story:50",
+            "assetType": "Story",
+            "name": "Infra",
+            "number": "S-50",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none",
+            "distance": 1
+          },
+          {
+            "oid": "Story:20",
+            "assetType": "Story",
+            "name": "Build API",
+            "number": "S-20",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved",
+            "distance": 2
+          }
+        ],
+        "blockingIssues": [
+          {
+            "oid": "Issue:5",
+            "assetType": "Issue",
+            "name": "Access blocker",
+            "number": "I-5",
+            "distance": 1
+          }
+        ]
+      },
+      "impact": {
+        "semantics": "Explicit dependency edges only; paths are evidence in graph.edges.",
+        "affected": [
+          {
+            "oid": "Story:40",
+            "distance": 1,
+            "path": [
+              "Story:10",
+              "Story:40"
+            ]
+          },
+          {
+            "oid": "Story:50",
+            "distance": 1,
+            "path": [
+              "Story:10",
+              "Story:50"
+            ]
+          },
+          {
+            "oid": "Story:20",
+            "distance": 2,
+            "path": [
+              "Story:10",
+              "Story:50",
+              "Story:20"
+            ]
+          }
+        ],
+        "blockingChains": [
+          {
+            "oid": "Defect:30",
+            "distance": 1,
+            "path": [
+              "Defect:30",
+              "Story:10"
+            ]
+          },
+          {
+            "oid": "Story:20",
+            "distance": 1,
+            "path": [
+              "Story:20",
+              "Story:10"
+            ]
+          },
+          {
+            "oid": "Story:50",
+            "distance": 2,
+            "path": [
+              "Story:50",
+              "Story:20",
+              "Story:10"
+            ]
+          }
+        ],
+        "directDependants": [
+          "Story:40",
+          "Story:50"
+        ],
+        "cycles": [
+          {
+            "kind": "dependency",
+            "path": [
+              "Story:10",
+              "Story:50",
+              "Story:20",
+              "Story:10"
+            ]
+          }
+        ],
+        "completeWithinRequestedDepth": true
+      },
+      "graph": {
+        "nodes": [
+          {
+            "oid": "Story:10",
+            "assetType": "Story",
+            "name": "Implement UI",
+            "number": "S-10",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Epic:2",
+            "assetType": "Epic",
+            "name": "Feature",
+            "number": "E-2",
+            "parent": {
+              "oid": "Epic:1",
+              "id": "Epic:1",
+              "name": "Root initiative",
+              "number": "E-1",
+              "relation": "Super"
+            },
+            "parentId": "Epic:1",
+            "parentName": "Root initiative",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Story:20",
+            "assetType": "Story",
+            "name": "Build API",
+            "number": "S-20",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Defect:30",
+            "assetType": "Defect",
+            "name": "Fix auth",
+            "number": "D-30",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Story:40",
+            "assetType": "Story",
+            "name": "Integration",
+            "number": "S-40",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none"
+          },
+          {
+            "oid": "Story:50",
+            "assetType": "Story",
+            "name": "Infra",
+            "number": "S-50",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none"
+          },
+          {
+            "oid": "Issue:5",
+            "assetType": "Issue",
+            "name": "Access blocker",
+            "number": "I-5"
+          },
+          {
+            "oid": "Epic:1",
+            "assetType": "Epic",
+            "name": "Root initiative",
+            "number": "E-1",
+            "parent": null,
+            "parentId": null,
+            "parentName": null,
+            "parentStatus": "none"
+          }
+        ],
+        "edges": [
+          {
+            "from": "Epic:2",
+            "to": "Story:10",
+            "kind": "hierarchy"
+          },
+          {
+            "from": "Story:20",
+            "to": "Story:10",
+            "kind": "dependency"
+          },
+          {
+            "from": "Defect:30",
+            "to": "Story:10",
+            "kind": "dependency"
+          },
+          {
+            "from": "Story:10",
+            "to": "Story:40",
+            "kind": "dependency"
+          },
+          {
+            "from": "Story:10",
+            "to": "Story:50",
+            "kind": "dependency"
+          },
+          {
+            "from": "Issue:5",
+            "to": "Story:10",
+            "kind": "blocker"
+          },
+          {
+            "from": "Epic:1",
+            "to": "Epic:2",
+            "kind": "hierarchy"
+          },
+          {
+            "from": "Story:50",
+            "to": "Story:20",
+            "kind": "dependency"
+          }
+        ],
+        "cycles": [
+          {
+            "kind": "dependency",
+            "path": [
+              "Story:10",
+              "Story:50",
+              "Story:20",
+              "Story:10"
+            ]
+          }
+        ]
+      },
+      "coverage": [
+        {
+          "oid": "Story:10",
+          "direction": "ancestors",
+          "relation": "Super",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Story:10",
+          "direction": "descendants",
+          "relation": "Subs",
+          "fetched": 0,
+          "status": "unsupported",
+          "nextStart": null,
+          "reason": "Relationship is not defined by this instance metadata."
+        },
+        {
+          "oid": "Story:10",
+          "direction": "upstream",
+          "relation": "Dependencies",
+          "fetched": 2,
+          "status": "complete",
+          "nextStart": null,
+          "total": 2
+        },
+        {
+          "oid": "Story:10",
+          "direction": "downstream",
+          "relation": "Dependants",
+          "fetched": 2,
+          "status": "complete",
+          "nextStart": null,
+          "total": 2
+        },
+        {
+          "oid": "Story:10",
+          "direction": "blockingIssues",
+          "relation": "BlockingIssues",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Epic:2",
+          "direction": "ancestors",
+          "relation": "Super",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Story:20",
+          "direction": "upstream",
+          "relation": "Dependencies",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Defect:30",
+          "direction": "upstream",
+          "relation": "Dependencies",
+          "fetched": 0,
+          "status": "complete",
+          "nextStart": null,
+          "total": 0
+        },
+        {
+          "oid": "Story:40",
+          "direction": "downstream",
+          "relation": "Dependants",
+          "fetched": 0,
+          "status": "complete",
+          "nextStart": null,
+          "total": 0
+        },
+        {
+          "oid": "Story:50",
+          "direction": "downstream",
+          "relation": "Dependants",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Story:50",
+          "direction": "upstream",
+          "relation": "Dependencies",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Story:20",
+          "direction": "downstream",
+          "relation": "Dependants",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        }
+      ],
+      "warnings": [],
+      "traversal": {
+        "completeWithinRequestedDepth": true,
+        "truncated": false,
+        "reasons": [],
+        "pending": [],
+        "requests": 19,
+        "permissionScope": "visible_to_current_user",
+        "limits": {
+          "hierarchyDepth": 2,
+          "dependencyDepth": 5,
+          "pageSize": 50,
+          "maxNodes": 100,
+          "maxEdges": 500,
+          "maxRequests": 80,
+          "maxDurationMs": 30000
+        },
+        "consistency": "live_nontransactional; concurrent changes and account visibility can affect results",
+        "depthBoundaries": [
+          {
+            "direction": "ancestors",
+            "depth": 2,
+            "unexpanded": [
+              "Epic:1"
+            ]
+          },
+          {
+            "direction": "descendants",
+            "depth": 2,
+            "unexpanded": []
+          },
+          {
+            "direction": "upstream",
+            "depth": 5,
+            "unexpanded": []
+          },
+          {
+            "direction": "downstream",
+            "depth": 5,
+            "unexpanded": []
+          }
+        ]
+      }
+    }
+  },
+  {
+    "args": {
+      "oid": "Story:10",
+      "maxNodes": 2
+    },
+    "result": {
+      "item": {
+        "oid": "Story:10",
+        "attributes": {
+          "Name": "Implement UI",
+          "Number": "S-10",
+          "Description": "Detailed description",
+          "Estimate": "5",
+          "Custom_Impact": "High",
+          "Super.Name": "Feature",
+          "Super.Number": "E-2"
+        },
+        "relations": {
+          "Super": [
+            {
+              "oid": "Epic:2",
+              "attributes": {
+                "Name": "Feature"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "oid": "Epic:2",
+          "id": "Epic:2",
+          "name": "Feature",
+          "number": "E-2",
+          "relation": "Super"
+        },
+        "parentId": "Epic:2",
+        "parentName": "Feature",
+        "parentNumber": "E-2",
+        "parentStatus": "resolved"
+      },
+      "metadata": {
+        "assetType": "Story",
+        "baseType": "PrimaryWorkitem",
+        "fields": {
+          "Name": {
+            "name": "Name",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Description": {
+            "name": "Description",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Number": {
+            "name": "Number",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Super": {
+            "name": "Super",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false,
+            "targetType": "Epic",
+            "reciprocal": "Subs"
+          },
+          "Estimate": {
+            "name": "Estimate",
+            "type": "Number",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Dependencies": {
+            "name": "Dependencies",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "PrimaryWorkitem",
+            "reciprocal": "Dependants"
+          },
+          "Dependants": {
+            "name": "Dependants",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "PrimaryWorkitem",
+            "reciprocal": "Dependencies"
+          },
+          "BlockingIssues": {
+            "name": "BlockingIssues",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "Issue",
+            "reciprocal": "BlockedPrimaryWorkitems"
+          },
+          "Custom_Impact": {
+            "name": "Custom_Impact",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": true
+          }
+        },
+        "operations": [
+          "Close"
+        ],
+        "version": "test",
+        "inheritance": [
+          "Story",
+          "PrimaryWorkitem",
+          "Workitem",
+          "BaseAsset"
+        ]
+      },
+      "metadataStatus": "available",
+      "hierarchy": {
+        "parent": {
+          "oid": "Epic:2",
+          "id": "Epic:2",
+          "name": "Feature",
+          "number": "E-2",
+          "relation": "Super"
+        },
+        "ancestors": [
+          {
+            "oid": "Epic:2",
+            "assetType": "Epic",
+            "name": "Feature",
+            "number": "E-2",
+            "parent": {
+              "oid": "Epic:1",
+              "id": "Epic:1",
+              "name": "Root initiative",
+              "number": "E-1",
+              "relation": "Super"
+            },
+            "parentId": "Epic:1",
+            "parentName": "Root initiative",
+            "parentStatus": "resolved",
+            "distance": 1
+          }
+        ],
+        "descendants": []
+      },
+      "dependencies": {
+        "semantics": "Edges point from prerequisite to dependent; upstream items must finish before this item, downstream items depend on it.",
+        "scope": "explicit_relationships; implicit inherited constraints are not synthesized",
+        "upstream": [],
+        "downstream": [],
+        "blockingIssues": []
+      },
+      "impact": {
+        "semantics": "Explicit dependency edges only; paths are evidence in graph.edges.",
+        "affected": [],
+        "blockingChains": [],
+        "directDependants": [],
+        "cycles": [],
+        "completeWithinRequestedDepth": false
+      },
+      "graph": {
+        "nodes": [
+          {
+            "oid": "Story:10",
+            "assetType": "Story",
+            "name": "Implement UI",
+            "number": "S-10",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Epic:2",
+            "assetType": "Epic",
+            "name": "Feature",
+            "number": "E-2",
+            "parent": {
+              "oid": "Epic:1",
+              "id": "Epic:1",
+              "name": "Root initiative",
+              "number": "E-1",
+              "relation": "Super"
+            },
+            "parentId": "Epic:1",
+            "parentName": "Root initiative",
+            "parentStatus": "resolved"
+          }
+        ],
+        "edges": [
+          {
+            "from": "Epic:2",
+            "to": "Story:10",
+            "kind": "hierarchy"
+          }
+        ],
+        "cycles": []
+      },
+      "coverage": [
+        {
+          "oid": "Story:10",
+          "direction": "ancestors",
+          "relation": "Super",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Story:10",
+          "direction": "descendants",
+          "relation": "Subs",
+          "fetched": 0,
+          "status": "unsupported",
+          "nextStart": null,
+          "reason": "Relationship is not defined by this instance metadata."
+        },
+        {
+          "oid": "Story:10",
+          "direction": "upstream",
+          "relation": "Dependencies",
+          "fetched": 0,
+          "status": "partial",
+          "nextStart": 0,
+          "continuation": {
+            "tool": "agility_related_items",
+            "arguments": {
+              "oid": "Story:10",
+              "relation": "Dependencies",
+              "pageSize": 50,
+              "start": 0
+            }
+          }
+        }
+      ],
+      "warnings": [],
+      "traversal": {
+        "completeWithinRequestedDepth": false,
+        "truncated": true,
+        "reasons": [
+          "maxNodes"
+        ],
+        "pending": [
+          {
+            "oid": "Story:10",
+            "direction": "upstream",
+            "relation": "Dependencies",
+            "start": 0
+          },
+          {
+            "oid": "Story:10",
+            "direction": "downstream",
+            "relation": "Dependants",
+            "start": 0
+          },
+          {
+            "oid": "Story:10",
+            "direction": "blockingIssues",
+            "relation": "BlockingIssues",
+            "start": 0
+          },
+          {
+            "oid": "Epic:2",
+            "direction": "ancestors",
+            "relation": "Super",
+            "start": 0
+          }
+        ],
+        "requests": 8,
+        "permissionScope": "visible_to_current_user",
+        "limits": {
+          "hierarchyDepth": 2,
+          "dependencyDepth": 1,
+          "pageSize": 50,
+          "maxNodes": 2,
+          "maxEdges": 500,
+          "maxRequests": 80,
+          "maxDurationMs": 30000
+        },
+        "consistency": "live_nontransactional; concurrent changes and account visibility can affect results",
+        "depthBoundaries": [
+          {
+            "direction": "ancestors",
+            "depth": 2,
+            "unexpanded": []
+          },
+          {
+            "direction": "descendants",
+            "depth": 2,
+            "unexpanded": []
+          },
+          {
+            "direction": "upstream",
+            "depth": 1,
+            "unexpanded": []
+          },
+          {
+            "direction": "downstream",
+            "depth": 1,
+            "unexpanded": []
+          }
+        ]
+      }
+    }
+  },
+  {
+    "args": {
+      "oid": "Story:10",
+      "maxEdges": 1
+    },
+    "result": {
+      "item": {
+        "oid": "Story:10",
+        "attributes": {
+          "Name": "Implement UI",
+          "Number": "S-10",
+          "Description": "Detailed description",
+          "Estimate": "5",
+          "Custom_Impact": "High",
+          "Super.Name": "Feature",
+          "Super.Number": "E-2"
+        },
+        "relations": {
+          "Super": [
+            {
+              "oid": "Epic:2",
+              "attributes": {
+                "Name": "Feature"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "oid": "Epic:2",
+          "id": "Epic:2",
+          "name": "Feature",
+          "number": "E-2",
+          "relation": "Super"
+        },
+        "parentId": "Epic:2",
+        "parentName": "Feature",
+        "parentNumber": "E-2",
+        "parentStatus": "resolved"
+      },
+      "metadata": {
+        "assetType": "Story",
+        "baseType": "PrimaryWorkitem",
+        "fields": {
+          "Name": {
+            "name": "Name",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Description": {
+            "name": "Description",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Number": {
+            "name": "Number",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Super": {
+            "name": "Super",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false,
+            "targetType": "Epic",
+            "reciprocal": "Subs"
+          },
+          "Estimate": {
+            "name": "Estimate",
+            "type": "Number",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Dependencies": {
+            "name": "Dependencies",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "PrimaryWorkitem",
+            "reciprocal": "Dependants"
+          },
+          "Dependants": {
+            "name": "Dependants",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "PrimaryWorkitem",
+            "reciprocal": "Dependencies"
+          },
+          "BlockingIssues": {
+            "name": "BlockingIssues",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "Issue",
+            "reciprocal": "BlockedPrimaryWorkitems"
+          },
+          "Custom_Impact": {
+            "name": "Custom_Impact",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": true
+          }
+        },
+        "operations": [
+          "Close"
+        ],
+        "version": "test",
+        "inheritance": [
+          "Story",
+          "PrimaryWorkitem",
+          "Workitem",
+          "BaseAsset"
+        ]
+      },
+      "metadataStatus": "available",
+      "hierarchy": {
+        "parent": {
+          "oid": "Epic:2",
+          "id": "Epic:2",
+          "name": "Feature",
+          "number": "E-2",
+          "relation": "Super"
+        },
+        "ancestors": [
+          {
+            "oid": "Epic:2",
+            "assetType": "Epic",
+            "name": "Feature",
+            "number": "E-2",
+            "parent": {
+              "oid": "Epic:1",
+              "id": "Epic:1",
+              "name": "Root initiative",
+              "number": "E-1",
+              "relation": "Super"
+            },
+            "parentId": "Epic:1",
+            "parentName": "Root initiative",
+            "parentStatus": "resolved",
+            "distance": 1
+          }
+        ],
+        "descendants": []
+      },
+      "dependencies": {
+        "semantics": "Edges point from prerequisite to dependent; upstream items must finish before this item, downstream items depend on it.",
+        "scope": "explicit_relationships; implicit inherited constraints are not synthesized",
+        "upstream": [],
+        "downstream": [],
+        "blockingIssues": []
+      },
+      "impact": {
+        "semantics": "Explicit dependency edges only; paths are evidence in graph.edges.",
+        "affected": [],
+        "blockingChains": [],
+        "directDependants": [],
+        "cycles": [],
+        "completeWithinRequestedDepth": false
+      },
+      "graph": {
+        "nodes": [
+          {
+            "oid": "Story:10",
+            "assetType": "Story",
+            "name": "Implement UI",
+            "number": "S-10",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          },
+          {
+            "oid": "Epic:2",
+            "assetType": "Epic",
+            "name": "Feature",
+            "number": "E-2",
+            "parent": {
+              "oid": "Epic:1",
+              "id": "Epic:1",
+              "name": "Root initiative",
+              "number": "E-1",
+              "relation": "Super"
+            },
+            "parentId": "Epic:1",
+            "parentName": "Root initiative",
+            "parentStatus": "resolved"
+          }
+        ],
+        "edges": [
+          {
+            "from": "Epic:2",
+            "to": "Story:10",
+            "kind": "hierarchy"
+          }
+        ],
+        "cycles": []
+      },
+      "coverage": [
+        {
+          "oid": "Story:10",
+          "direction": "ancestors",
+          "relation": "Super",
+          "fetched": 1,
+          "status": "complete",
+          "nextStart": null,
+          "total": 1
+        },
+        {
+          "oid": "Story:10",
+          "direction": "descendants",
+          "relation": "Subs",
+          "fetched": 0,
+          "status": "unsupported",
+          "nextStart": null,
+          "reason": "Relationship is not defined by this instance metadata."
+        },
+        {
+          "oid": "Story:10",
+          "direction": "upstream",
+          "relation": "Dependencies",
+          "fetched": 0,
+          "status": "partial",
+          "nextStart": 0,
+          "continuation": {
+            "tool": "agility_related_items",
+            "arguments": {
+              "oid": "Story:10",
+              "relation": "Dependencies",
+              "pageSize": 50,
+              "start": 0
+            }
+          }
+        }
+      ],
+      "warnings": [],
+      "traversal": {
+        "completeWithinRequestedDepth": false,
+        "truncated": true,
+        "reasons": [
+          "maxEdges"
+        ],
+        "pending": [
+          {
+            "oid": "Story:10",
+            "direction": "upstream",
+            "relation": "Dependencies",
+            "start": 0
+          },
+          {
+            "oid": "Story:10",
+            "direction": "downstream",
+            "relation": "Dependants",
+            "start": 0
+          },
+          {
+            "oid": "Story:10",
+            "direction": "blockingIssues",
+            "relation": "BlockingIssues",
+            "start": 0
+          },
+          {
+            "oid": "Epic:2",
+            "direction": "ancestors",
+            "relation": "Super",
+            "start": 0
+          }
+        ],
+        "requests": 8,
+        "permissionScope": "visible_to_current_user",
+        "limits": {
+          "hierarchyDepth": 2,
+          "dependencyDepth": 1,
+          "pageSize": 50,
+          "maxNodes": 100,
+          "maxEdges": 1,
+          "maxRequests": 80,
+          "maxDurationMs": 30000
+        },
+        "consistency": "live_nontransactional; concurrent changes and account visibility can affect results",
+        "depthBoundaries": [
+          {
+            "direction": "ancestors",
+            "depth": 2,
+            "unexpanded": []
+          },
+          {
+            "direction": "descendants",
+            "depth": 2,
+            "unexpanded": []
+          },
+          {
+            "direction": "upstream",
+            "depth": 1,
+            "unexpanded": []
+          },
+          {
+            "direction": "downstream",
+            "depth": 1,
+            "unexpanded": []
+          }
+        ]
+      }
+    }
+  },
+  {
+    "args": {
+      "oid": "Story:10",
+      "maxRequests": 5
+    },
+    "result": {
+      "item": {
+        "oid": "Story:10",
+        "attributes": {
+          "Name": "Implement UI",
+          "Number": "S-10",
+          "Description": "Detailed description",
+          "Estimate": "5",
+          "Custom_Impact": "High",
+          "Super.Name": "Feature",
+          "Super.Number": "E-2"
+        },
+        "relations": {
+          "Super": [
+            {
+              "oid": "Epic:2",
+              "attributes": {
+                "Name": "Feature"
+              }
+            }
+          ]
+        },
+        "parent": {
+          "oid": "Epic:2",
+          "id": "Epic:2",
+          "name": "Feature",
+          "number": "E-2",
+          "relation": "Super"
+        },
+        "parentId": "Epic:2",
+        "parentName": "Feature",
+        "parentNumber": "E-2",
+        "parentStatus": "resolved"
+      },
+      "metadata": {
+        "assetType": "Story",
+        "baseType": "PrimaryWorkitem",
+        "fields": {
+          "Name": {
+            "name": "Name",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Description": {
+            "name": "Description",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Number": {
+            "name": "Number",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Super": {
+            "name": "Super",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false,
+            "targetType": "Epic",
+            "reciprocal": "Subs"
+          },
+          "Estimate": {
+            "name": "Estimate",
+            "type": "Number",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": false
+          },
+          "Dependencies": {
+            "name": "Dependencies",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "PrimaryWorkitem",
+            "reciprocal": "Dependants"
+          },
+          "Dependants": {
+            "name": "Dependants",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "PrimaryWorkitem",
+            "reciprocal": "Dependencies"
+          },
+          "BlockingIssues": {
+            "name": "BlockingIssues",
+            "type": "Relation",
+            "required": false,
+            "readOnly": false,
+            "multiValue": true,
+            "custom": false,
+            "targetType": "Issue",
+            "reciprocal": "BlockedPrimaryWorkitems"
+          },
+          "Custom_Impact": {
+            "name": "Custom_Impact",
+            "type": "Text",
+            "required": false,
+            "readOnly": false,
+            "multiValue": false,
+            "custom": true
+          }
+        },
+        "operations": [
+          "Close"
+        ],
+        "version": "test",
+        "inheritance": [
+          "Story",
+          "PrimaryWorkitem",
+          "Workitem",
+          "BaseAsset"
+        ]
+      },
+      "metadataStatus": "available",
+      "hierarchy": {
+        "parent": {
+          "oid": "Epic:2",
+          "id": "Epic:2",
+          "name": "Feature",
+          "number": "E-2",
+          "relation": "Super"
+        },
+        "ancestors": [],
+        "descendants": []
+      },
+      "dependencies": {
+        "semantics": "Edges point from prerequisite to dependent; upstream items must finish before this item, downstream items depend on it.",
+        "scope": "explicit_relationships; implicit inherited constraints are not synthesized",
+        "upstream": [],
+        "downstream": [],
+        "blockingIssues": []
+      },
+      "impact": {
+        "semantics": "Explicit dependency edges only; paths are evidence in graph.edges.",
+        "affected": [],
+        "blockingChains": [],
+        "directDependants": [],
+        "cycles": [],
+        "completeWithinRequestedDepth": false
+      },
+      "graph": {
+        "nodes": [
+          {
+            "oid": "Story:10",
+            "assetType": "Story",
+            "name": "Implement UI",
+            "number": "S-10",
+            "parent": {
+              "oid": "Epic:2",
+              "id": "Epic:2",
+              "name": "Feature",
+              "number": "E-2",
+              "relation": "Super"
+            },
+            "parentId": "Epic:2",
+            "parentName": "Feature",
+            "parentStatus": "resolved"
+          }
+        ],
+        "edges": [],
+        "cycles": []
+      },
+      "coverage": [],
+      "warnings": [],
+      "traversal": {
+        "completeWithinRequestedDepth": false,
+        "truncated": true,
+        "reasons": [
+          "maxRequests"
+        ],
+        "pending": [
+          {
+            "oid": "Story:10",
+            "direction": "ancestors",
+            "relation": "Super",
+            "start": 0
+          },
+          {
+            "oid": "Story:10",
+            "direction": "descendants",
+            "relation": "Subs",
+            "start": 0
+          },
+          {
+            "oid": "Story:10",
+            "direction": "upstream",
+            "relation": "Dependencies",
+            "start": 0
+          },
+          {
+            "oid": "Story:10",
+            "direction": "downstream",
+            "relation": "Dependants",
+            "start": 0
+          },
+          {
+            "oid": "Story:10",
+            "direction": "blockingIssues",
+            "relation": "BlockingIssues",
+            "start": 0
+          }
+        ],
+        "requests": 5,
+        "permissionScope": "visible_to_current_user",
+        "limits": {
+          "hierarchyDepth": 2,
+          "dependencyDepth": 1,
+          "pageSize": 50,
+          "maxNodes": 100,
+          "maxEdges": 500,
+          "maxRequests": 5,
+          "maxDurationMs": 30000
+        },
+        "consistency": "live_nontransactional; concurrent changes and account visibility can affect results",
+        "depthBoundaries": [
+          {
+            "direction": "ancestors",
+            "depth": 2,
+            "unexpanded": []
+          },
+          {
+            "direction": "descendants",
+            "depth": 2,
+            "unexpanded": []
+          },
+          {
+            "direction": "upstream",
+            "depth": 1,
+            "unexpanded": []
+          },
+          {
+            "direction": "downstream",
+            "depth": 1,
+            "unexpanded": []
+          }
+        ]
+      }
+    }
+  }
+]

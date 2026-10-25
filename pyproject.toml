@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agility-wincred-mcp"
+version = "0.4.0"
+description = "Digital.ai Agility MCP server with Windows Credential Manager authentication"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+dependencies = ["fastmcp==4.1.3", "httpx>=0.28,<1", "defusedxml>=0.7.1,<1", "pydantic>=2.12,<3", "jsonschema>=4.26,<5"]
+
+[project.scripts]
+agility-mcp = "agility_mcp.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-asyncio>=1", "ruff>=0.14", "mypy>=1.18", "types-defusedxml", "types-jsonschema"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agility_mcp"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/agility_mcp", "tests", "integration", "pyproject.toml", "uv.lock", "README.md", "LICENSE", "agility.example.json", ".github"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.mypy]
+python_version = "3.12"
+check_untyped_defs = true
+files = ["src/agility_mcp"]

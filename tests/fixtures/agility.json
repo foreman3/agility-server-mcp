@@ -1,0 +1,90 @@
+{
+  "data": {
+    "Epic:1": {
+      "Name": "Root initiative",
+      "Number": "E-1",
+      "relations": {}
+    },
+    "Epic:2": {
+      "Name": "Feature",
+      "Number": "E-2",
+      "relations": {
+        "Super": [
+          "Epic:1"
+        ]
+      }
+    },
+    "Story:10": {
+      "Name": "Implement UI",
+      "Number": "S-10",
+      "Description": "Detailed description",
+      "Custom_Impact": "High",
+      "Estimate": "5",
+      "relations": {
+        "Super": [
+          "Epic:2"
+        ],
+        "Dependencies": [
+          "Story:20",
+          "Defect:30"
+        ],
+        "BlockingIssues": [
+          "Issue:5"
+        ]
+      }
+    },
+    "Story:20": {
+      "Name": "Build API",
+      "Number": "S-20",
+      "relations": {
+        "Super": [
+          "Epic:2"
+        ],
+        "Dependencies": [
+          "Story:50"
+        ]
+      }
+    },
+    "Defect:30": {
+      "Name": "Fix auth",
+      "Number": "D-30",
+      "relations": {
+        "Super": [
+          "Epic:2"
+        ]
+      }
+    },
+    "Story:40": {
+      "Name": "Integration",
+      "Number": "S-40",
+      "relations": {
+        "Dependencies": [
+          "Story:10"
+        ]
+      }
+    },
+    "Story:50": {
+      "Name": "Infra",
+      "Number": "S-50",
+      "relations": {
+        "Dependencies": [
+          "Story:10"
+        ]
+      }
+    },
+    "Issue:5": {
+      "Name": "Access blocker",
+      "Number": "I-5",
+      "relations": {}
+    }
+  },
+  "metadata": {
+    "BaseAsset": "<AttributeDefinition name=\"Name\" attributetype=\"Text\" iscustom=\"false\"/><AttributeDefinition name=\"Description\" attributetype=\"Text\" iscustom=\"false\"/>",
+    "Workitem": "<Base nameref=\"BaseAsset\"/><AttributeDefinition name=\"Number\" attributetype=\"Text\" iscustom=\"false\"/><AttributeDefinition name=\"Super\" attributetype=\"Relation\" ismultivalue=\"false\"><RelatedAsset nameref=\"Epic\"/><ReciprocalRelation tokenref=\"Epic.Subs\"/></AttributeDefinition>",
+    "Epic": "<Base nameref=\"Workitem\"/><AttributeDefinition name=\"Subs\" attributetype=\"Relation\" ismultivalue=\"true\"><RelatedAsset nameref=\"Workitem\"/><ReciprocalRelation tokenref=\"Workitem.Super\"/></AttributeDefinition><AttributeDefinition name=\"Dependencies\" attributetype=\"Relation\" ismultivalue=\"true\"><RelatedAsset nameref=\"Epic\"/><ReciprocalRelation tokenref=\"Epic.Dependants\"/></AttributeDefinition><AttributeDefinition name=\"Dependants\" attributetype=\"Relation\" ismultivalue=\"true\"><RelatedAsset nameref=\"Epic\"/><ReciprocalRelation tokenref=\"Epic.Dependencies\"/></AttributeDefinition>",
+    "PrimaryWorkitem": "<Base nameref=\"Workitem\"/><AttributeDefinition name=\"Estimate\" attributetype=\"Number\" iscustom=\"false\"/><AttributeDefinition name=\"Dependencies\" attributetype=\"Relation\" ismultivalue=\"true\"><RelatedAsset nameref=\"PrimaryWorkitem\"/><ReciprocalRelation tokenref=\"PrimaryWorkitem.Dependants\"/></AttributeDefinition><AttributeDefinition name=\"Dependants\" attributetype=\"Relation\" ismultivalue=\"true\"><RelatedAsset nameref=\"PrimaryWorkitem\"/><ReciprocalRelation tokenref=\"PrimaryWorkitem.Dependencies\"/></AttributeDefinition><AttributeDefinition name=\"BlockingIssues\" attributetype=\"Relation\" ismultivalue=\"true\"><RelatedAsset nameref=\"Issue\"/><ReciprocalRelation tokenref=\"Issue.BlockedPrimaryWorkitems\"/></AttributeDefinition>",
+    "Story": "<Base nameref=\"PrimaryWorkitem\"/><AttributeDefinition name=\"Custom_Impact\" attributetype=\"Text\" iscustom=\"true\"/><Operation name=\"Close\"/>",
+    "Defect": "<Base nameref=\"PrimaryWorkitem\"/>",
+    "Issue": "<Base nameref=\"BaseAsset\"/><AttributeDefinition name=\"Number\" attributetype=\"Text\" iscustom=\"false\"/><AttributeDefinition name=\"BlockedPrimaryWorkitems\" attributetype=\"Relation\" ismultivalue=\"true\"><RelatedAsset nameref=\"PrimaryWorkitem\"/><ReciprocalRelation tokenref=\"PrimaryWorkitem.BlockingIssues\"/></AttributeDefinition>"
+  }
+}

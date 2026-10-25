@@ -1,0 +1,863 @@
+[
+  {
+    "name": "agility_status",
+    "description": "Check configuration and Windows credential presence without revealing the secret. Optionally verify authenticated API access.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "checkApi": {
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_metadata",
+    "description": "Discover asset types or inspect attributes, relations, required fields, and operations. Internal names differ from UI labels. Metadata does not require authentication.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "assetType": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+        },
+        "member": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+        }
+      },
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_list_assets",
+    "description": "List/search any asset type with selected fields, Agility where syntax, text search, sorting, paging, or an as-of snapshot. Returns nextStart when more results may exist.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "assetType": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+        },
+        "select": {
+          "default": [
+            "Name"
+          ],
+          "minItems": 1,
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^[^\\x00-\\x1f,]+$",
+            "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+          }
+        },
+        "where": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "sort": {
+          "maxItems": 20,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^[^\\x00-\\x1f,]+$",
+            "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+          }
+        },
+        "find": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "findIn": {
+          "minItems": 1,
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^[^\\x00-\\x1f,]+$",
+            "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+          }
+        },
+        "pageSize": {
+          "default": 100,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "start": {
+          "default": 0,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "asOf": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "assetType"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_get_asset",
+    "description": "Retrieve one asset by OID, optionally including an historical moment, with explicit selected fields. Portfolio/backlog items automatically include parent OID, name, and number.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "oid": {
+          "type": "string",
+          "maxLength": 160,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*:\\d+(?::\\d+)?$",
+          "description": "Internal OID, e.g. Story:1234, not the display number S-01234."
+        },
+        "select": {
+          "default": [
+            "Name"
+          ],
+          "minItems": 1,
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^[^\\x00-\\x1f,]+$",
+            "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+          }
+        }
+      },
+      "required": [
+        "oid"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_get_item_detail",
+    "description": "Get detailed item fields, custom scalar fields, instance field/operation metadata, parents/ancestors/descendants, upstream prerequisites, downstream dependants, explicit impact paths, blockers, and a directed graph with cycle detection. Uses metadata-verified reciprocal queries for true relationship paging. Results are bounded: always inspect coverage, pending work, and depthBoundaries. Current OIDs only.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "oid": {
+          "type": "string",
+          "maxLength": 160,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*:\\d+$"
+        },
+        "select": {
+          "minItems": 1,
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^[^\\x00-\\x1f,]+$",
+            "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+          }
+        },
+        "includeMetadata": {
+          "default": true,
+          "type": "boolean"
+        },
+        "hierarchyDepth": {
+          "default": 2,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "dependencyDepth": {
+          "default": 1,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "pageSize": {
+          "default": 50,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "maxNodes": {
+          "default": 100,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "maxEdges": {
+          "default": 500,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5000
+        },
+        "maxRequests": {
+          "default": 80,
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 300
+        },
+        "maxDurationMs": {
+          "default": 30000,
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 120000
+        }
+      },
+      "required": [
+        "oid"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_related_items",
+    "description": "Retrieve one page of a metadata-verified relationship, such as Super, Subs, Dependencies (upstream), Dependants (downstream), or BlockingIssues. Includes item parent IDs/names and continuation arguments. Unsupported/unavailable relations are explicitly reported; results only include assets visible to this account.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "oid": {
+          "type": "string",
+          "maxLength": 160,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*:\\d+$"
+        },
+        "relation": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+        },
+        "pageSize": {
+          "default": 50,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "start": {
+          "default": 0,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "oid",
+        "relation"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_asset_history",
+    "description": "Retrieve a page of historical versions for an asset. History is ordered by Moment ascending by the API.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "oid": {
+          "type": "string",
+          "maxLength": 160,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*:\\d+$"
+        },
+        "select": {
+          "default": [
+            "Name",
+            "ChangeDateUTC",
+            "ChangedBy.Name"
+          ],
+          "minItems": 1,
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^[^\\x00-\\x1f,]+$",
+            "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+          }
+        },
+        "pageSize": {
+          "default": 100,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "start": {
+          "default": 0,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "oid"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_new_asset_template",
+    "description": "Get the API template/defaults for creating an asset, optionally in a parent context such as Scope:1000. This does not create anything; inspect metadata for required fields.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "assetType": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+        },
+        "context": {
+          "type": "string",
+          "maxLength": 160,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*:\\d+$"
+        }
+      },
+      "required": [
+        "assetType"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_query",
+    "description": "Run up to 10 read-only JSON query.v1 queries with nested selections, filters, variables, and per-query paging. Returns the API array of result arrays. Only root results are paged; nested relationships can be large. Windows-integrated instances may restrict query.v1; use agility_list_assets in that case.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "queries": {
+          "minItems": 1,
+          "maxItems": 10,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+              },
+              "select": {
+                "default": [
+                  "Name"
+                ],
+                "minItems": 1,
+                "maxItems": 100,
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 512,
+                      "pattern": "^[^\\x00-\\x1f,]+$",
+                      "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string",
+                          "maxLength": 128,
+                          "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+                        },
+                        "select": {
+                          "minItems": 1,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 512,
+                                "pattern": "^[^\\x00-\\x1f,]+$",
+                                "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "from": {
+                                    "type": "string",
+                                    "maxLength": 128,
+                                    "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+                                  },
+                                  "select": {
+                                    "minItems": 1,
+                                    "maxItems": 100,
+                                    "type": "array",
+                                    "items": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "minLength": 1,
+                                          "maxLength": 512,
+                                          "pattern": "^[^\\x00-\\x1f,]+$",
+                                          "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string",
+                                              "maxLength": 128,
+                                              "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+                                            },
+                                            "select": {
+                                              "minItems": 1,
+                                              "maxItems": 100,
+                                              "type": "array",
+                                              "items": {
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 512,
+                                                "pattern": "^[^\\x00-\\x1f,]+$",
+                                                "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+                                              }
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "select"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      ]
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "from",
+                                  "select"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "from",
+                        "select"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
+              "where": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512,
+                  "pattern": "^[^\\x00-\\x1f,]+$",
+                  "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+                },
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 100000
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "filter": {
+                "maxItems": 50,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              },
+              "with": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "pattern": "^\\$[A-Za-z][A-Za-z0-9_]*$"
+                },
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 100000
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "sort": {
+                "maxItems": 20,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512,
+                  "pattern": "^[^\\x00-\\x1f,]+$",
+                  "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+                }
+              },
+              "find": {
+                "type": "string",
+                "maxLength": 1000
+              },
+              "findin": {
+                "minItems": 1,
+                "maxItems": 100,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512,
+                  "pattern": "^[^\\x00-\\x1f,]+$",
+                  "description": "Agility selection token, e.g. Scope.Name or Children.@Count."
+                }
+              },
+              "asof": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "page": {
+                "default": {
+                  "size": 100,
+                  "start": 0
+                },
+                "type": "object",
+                "properties": {
+                  "size": {
+                    "default": 100,
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000
+                  },
+                  "start": {
+                    "default": 0,
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "from"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "queries"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_create_asset",
+    "description": "Create an asset using scalar attributes and relationship changes. Discover required attributes and relations with metadata first. Creation is never automatically retried.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "assetType": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+        },
+        "attributes": {
+          "default": {},
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100000
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "relations": {
+          "default": [],
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+              },
+              "action": {
+                "type": "string",
+                "enum": [
+                  "set",
+                  "add",
+                  "remove"
+                ]
+              },
+              "targets": {
+                "maxItems": 100,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 160,
+                  "pattern": "^[A-Za-z][A-Za-z0-9_]*:\\d+$"
+                }
+              }
+            },
+            "required": [
+              "name",
+              "action",
+              "targets"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "assetType"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_update_asset",
+    "description": "Update selected scalar attributes and relationships on an existing asset. null clears a scalar; set with no targets clears a single relation; add/remove modify multivalue relations. Read current data first. Last writer wins: no optimistic concurrency guarantee.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "oid": {
+          "type": "string",
+          "maxLength": 160,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*:\\d+$"
+        },
+        "attributes": {
+          "default": {},
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+          },
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100000
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "relations": {
+          "default": [],
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+              },
+              "action": {
+                "type": "string",
+                "enum": [
+                  "set",
+                  "add",
+                  "remove"
+                ]
+              },
+              "targets": {
+                "maxItems": 100,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 160,
+                  "pattern": "^[A-Za-z][A-Za-z0-9_]*:\\d+$"
+                }
+              }
+            },
+            "required": [
+              "name",
+              "action",
+              "targets"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "oid"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "agility_execute_operation",
+    "description": "Execute an explicitly allowed Agility operation on an existing asset (for example Close, Reactivate, or Delete). Inspect metadata and obtain user intent before changing lifecycle state. Never automatically retried.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "oid": {
+          "type": "string",
+          "maxLength": 160,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*:\\d+$"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "Close",
+            "Delete"
+          ]
+        }
+      },
+      "required": [
+        "oid",
+        "operation"
+      ],
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": true
+    }
+  }
+]

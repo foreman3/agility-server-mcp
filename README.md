@@ -1,59 +1,54 @@
 # Digital.ai Agility MCP for Windows
 
-A JavaScript MCP server for Digital.ai Agility, formerly VersionOne. Runs on Node.js over stdio and ships as an `npx` executable. Authentication comes exclusively from **Windows Credential Manager**, using the current Windows user's Generic Credentials.
+A Python 3.12+ MCP server for Digital.ai Agility, formerly VersionOne. Runs over stdio using standalone FastMCP 4.1.3. Authentication comes exclusively from **Windows Credential Manager**, using the current Windows user's Generic Credentials.
 
-Requires Windows 10/11 or Windows Server, Node.js 22+, Windows PowerShell 5.1, and an Agility instance. No native Node addons, compilation step, `keytar`, or separately installed PowerShell modules. The bundled PowerShell helper calls `CredReadW`, `CredWriteW`, and `CredDeleteW` in the Windows API through a small in-memory C# interop declaration. Application-control policies must permit the helper and `Add-Type`; the server does not change execution policy.
+Requires Windows 10/11 or Windows Server, Python 3.12+, uv, and an Agility instance. No Node.js, PowerShell, C# compiler, or native extension is required by the credential worker. It calls `CredReadW`, `CredWriteW`, `CredDeleteW`, and `CredFree` directly through Python `ctypes` in a short-lived process.
 
 ## Quick start from this checkout
 
 ```powershell
-npm ci
+uv sync --locked
 $env:AGILITY_BASE_URL = 'https://your-server/YourAgilityInstance'
-node .\bin\agility-mcp.js credentials set
-node .\bin\agility-mcp.js doctor
+uv run agility-mcp credentials set
+uv run agility-mcp doctor
+uv run agility-mcp credentials status
 ```
 
-`credentials set` prompts for the access token **without echoing it**. Create the token in Agility's Member Applications/grant UI first; this server does not create grants. A new invocation overwrites the same saved credential, allowing token rotation. The default credential target is derived from the normalized instance URL, so different instances use different entries. Keep the instance path and its case consistent between setup and server configuration.
+`credentials set` prompts for the access token **without echoing it**. Create the token in Agility's Member Applications/grant UI first; this server does not create grants. Repeating setup overwrites the same saved credential, allowing rotation. The default credential target is derived from the normalized instance URL; keep its path and case consistent.
+
+The worker stores a Generic Credential with machine-local persistence for the current Windows user (`Type=1`, `Persist=2`), using UTF-16LE. You can also use Control Panel → Credential Manager → Windows Credentials → Add a generic credential with the exact target reported by `credentials status`. Token authentication accepts an arbitrary username; Basic authentication requires the Agility username. The secret limit is 2,560 bytes (1,280 UTF-16 code units).
+
+Run the MCP host under the **same Windows user** as credential setup. A Linux, WSL, or remote process cannot read this user's Windows vault. To remove an entry, run `uv run agility-mcp credentials delete` with the same configuration.
+
+## Run with uvx
+
+Version 0.4.0 is not published to PyPI. Build a wheel from this checkout:
 
 ```powershell
-node .\bin\agility-mcp.js credentials status
-node .\bin\agility-mcp.js credentials delete
+uv build
+uvx --from .\dist\agility_wincred_mcp-0.4.0-py3-none-any.whl agility-mcp --version
+uvx --from .\dist\agility_wincred_mcp-0.4.0-py3-none-any.whl agility-mcp credentials set --base-url https://your-server/YourAgilityInstance
+uvx --from .\dist\agility_wincred_mcp-0.4.0-py3-none-any.whl agility-mcp doctor --base-url https://your-server/YourAgilityInstance
 ```
 
-The helper stores a UTF-16 Generic Credential, persisted for the current user on this machine. You can also add it in Control Panel → Credential Manager → Windows Credentials → Add a generic credential. Use the exact target reported by `credentials status` (or set `AGILITY_CREDENTIAL_TARGET` explicitly), an arbitrary username for token auth, and the access token as the password. Basic auth uses the actual Agility username and password. Credential Manager limits secrets to 2,560 bytes: 1,280 UTF-16 code units.
-
-Run the MCP host under the **same Windows user** as credential setup. A Windows service or scheduled task has its own logon/session requirements. A Linux, WSL, or remote-hosted MCP process cannot read this user's Windows vault.
-
-## Run with npx
-
-The checkout is ready to package. To create an archive and run it locally:
+Or use a full, reviewed Git commit SHA containing the Python migration:
 
 ```powershell
-npm pack
-npx --yes --package .\agility-wincred-mcp-0.3.0.tgz agility-mcp --version
-npx --yes --package .\agility-wincred-mcp-0.3.0.tgz agility-mcp credentials set --base-url https://your-server/YourAgilityInstance
-npx --yes --package .\agility-wincred-mcp-0.3.0.tgz agility-mcp doctor --base-url https://your-server/YourAgilityInstance
+uvx --from "git+https://github.com/foreman3/agility-server-mcp.git@<FULL_COMMIT_SHA>" agility-mcp serve --base-url https://your-server/YourAgilityInstance
 ```
 
-The package is **not published to npm by this project setup**. Choose an available package name or your organization's npm scope before publishing. After you publish version `0.3.0`, the following form is available (replace the name if you rename it):
-
-```powershell
-npx --yes agility-wincred-mcp@0.3.0 credentials set --base-url https://your-server/YourAgilityInstance
-npx --yes agility-wincred-mcp@0.3.0 serve --base-url https://your-server/YourAgilityInstance
-```
-
-Pin an exact version in your MCP configuration. A global installation is also supported with `npm install -g <package-or-tarball>` followed by `agility-mcp`.
+Replace `<FULL_COMMIT_SHA>` with the exact revision you reviewed. Do not use an unpinned branch in a host configuration. `python -m agility_mcp` supports the same commands after installation.
 
 ## MCP host configuration
 
-For a locally packed archive, a Windows MCP host that uses `mcpServers` can launch:
+A Windows MCP host that uses `mcpServers` can launch the built wheel:
 
 ```json
 {
   "mcpServers": {
     "agility": {
-      "command": "cmd.exe",
-      "args": ["/d", "/c", "npx", "--yes", "--package", "C:\\path\\to\\agility-wincred-mcp-0.3.0.tgz", "agility-mcp", "serve"],
+      "command": "uvx",
+      "args": ["--python", "3.12", "--from", "C:\\path\\to\\agility_wincred_mcp-0.4.0-py3-none-any.whl", "agility-mcp", "serve"],
       "env": {
         "AGILITY_BASE_URL": "https://your-server/YourAgilityInstance"
       }
@@ -62,9 +57,13 @@ For a locally packed archive, a Windows MCP host that uses `mcpServers` can laun
 }
 ```
 
-`cmd.exe /d /c` runs the Windows `npx.cmd` shim; hosts that support launching `npx` directly may use that instead. The `--package` argument must be an absolute path visible to the MCP host. After publication, use `args: ["/d", "/c", "npx", "--yes", "agility-wincred-mcp@0.3.0", "serve"]` instead. For source development, use `command: "node"` and `args: ["C:\\path\\to\\bin\\agility-mcp.js", "serve"]`.
+Use an absolute wheel path visible to the host. For a pinned source install, replace the `--from` argument with the Git URL above. For development use `command: "uv"` and `args: ["run", "--project", "C:\\path\\to\\checkout", "agility-mcp", "serve"]`. Ensure `uv`/`uvx` is on the host's PATH or specify the full executable path.
 
-No token or password belongs in this JSON. Normal server output on stdout contains only MCP protocol messages; CLI diagnostics go to stderr.
+## Migration from 0.3.0
+
+Replace the Node/npx host launch command with uvx. JSON configuration keys, CLI flags, `AGILITY_*` variables, precedence, tool names, camelCase arguments, and result envelopes are preserved. Existing URL-derived credential targets and explicitly configured targets are unchanged; **you do not need to re-enter existing credentials**. Both credential implementations were checked with synthetic Unicode credentials in each direction.
+
+Replace `NODE_EXTRA_CA_CERTS` with `SSL_CERT_FILE` pointing to a PEM bundle containing the certificate authorities needed by your instance. Python HTTPX uses its default CA bundle unless `SSL_CERT_FILE` or `SSL_CERT_DIR` overrides it; it does not automatically inherit Node's certificate settings. See [HTTPX certificate configuration](https://www.python-httpx.org/advanced/ssl/). HTTPX respects `HTTP_PROXY`, `HTTPS_PROXY`, `ALL_PROXY`, and `NO_PROXY`; configure `NO_PROXY` for local development fixtures. TLS verification stays enabled.
 
 ## Configuration
 
@@ -100,7 +99,7 @@ Example configuration:
 
 Agility recommends bearer access tokens. For an instance configured with Windows Integrated Authentication, token-based REST access uses **`rest-1.oauth.v1`**. The credential source is the Windows vault; this server does **not** implement NTLM/Kerberos negotiation. Basic authentication is optional for deployments that support it; it is not supported for on-premises Windows Integrated Authentication or on-demand SSO. `query.v1` has no configurable OAuth REST variant; if your deployment rejects it, use `agility_list_assets`, which uses the configured REST endpoint.
 
-Use the application base URL, not `/Default.aspx`, `/Account.mvc/Login`, or an API endpoint URL. HTTPS is required unless explicitly allowing HTTP. For enterprise certificate authorities, launch Node with `NODE_EXTRA_CA_CERTS` pointing to your trusted PEM certificate bundle. Never disable TLS verification. Proxy routing can be supplied using the selected Node version's supported proxy configuration; the server does not implement proxy authentication or a custom dispatcher.
+Use the application base URL, not `/Default.aspx`, `/Account.mvc/Login`, or an API endpoint URL. HTTPS is required unless explicitly allowing HTTP. For enterprise certificate authorities, set `SSL_CERT_FILE` to a trusted PEM certificate bundle as described in the migration section. HTTPX supports standard proxy environment variables. Never disable TLS verification.
 
 ## Tools
 
@@ -270,21 +269,25 @@ Example: update owners without replacing the multivalue relationship:
 - Redirects are blocked, including same-origin redirects. This prevents accidental credential forwarding and exposes incorrect instance paths or login redirects as errors.
 - Reads retry transport failures before a response and HTTP 429/502/503/504, with bounded exponential backoff/jitter or `Retry-After` (capped at 30 seconds). `query.v1` POST is read-only and eligible for retries. Authentication, authorization, validation, and XML/JSON errors are not retried. Timeouts and failed response streams are not retried.
 - Creates, updates, and lifecycle operations are never retried automatically. A network failure can leave a write outcome unknown; check the asset before repeating it. There are no multi-asset transactions, bulk write tools, or automatic rollback.
-- Per-attempt timeouts include response streaming. MCP cancellation propagates to credential retrieval, fetch, and retry waits. Credential retrieval has its own configured timeout and a 20-second helper safety cap. At most 64 requests can wait behind the configured concurrency limit. Each HTTP request body is capped at 1 MiB; responses are bounded while streaming.
+- Per-attempt timeouts include response streaming. MCP cancellation propagates to credential retrieval, HTTP requests, and retry waits. Credential retrieval has its own configured timeout and a 20-second helper safety cap. At most 64 requests can wait behind the configured concurrency limit. Each HTTP request body is capped at 1 MiB; responses are bounded while streaming.
 - XML values are escaped, identifiers validated, and DTD/entity declarations rejected. Server error bodies are not returned to the model or logs. Tool failures return MCP `isError` without crashing the connection.
 - Tool annotations identify read and destructive behavior. Agility's own permissions remain authoritative. Treat descriptions, comments, and other retrieved asset content as untrusted text.
 
 ## Validation and development
 
 ```powershell
-npm ci
-npm run check
-npm test
-npm run test:windows
-npm pack --dry-run
+uv sync --locked
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy
+uv run pytest -q
+uv run pytest integration/test_windows_credentials.py -q
+uv build
 ```
 
-The Windows GitHub Actions workflow runs these checks and launches the packed archive through `npx`. The normal suite uses fixture responses, in-memory MCP client/server sessions, and a local HTTP fixture with a real stdio child process. The Windows integration test creates a unique **synthetic** Generic Credential, verifies Unicode and rotation, and removes it in `finally`; it does not access existing Agility credentials. Restricted execution environments may need permission to run PowerShell, bind a local test socket, or access Credential Manager.
+Windows CI runs Python 3.12 and 3.14, Ruff, type checks, unit/contract tests, synthetic vault integration, wheel/sdist builds, packaged uvx launches, and installation from the exact Git commit. No publishing step is configured.
+
+The normal suite uses synthetic HTTP responses, captured JavaScript schemas and semantic outputs, FastMCP in-memory sessions, cancellation tests, and a real stdio subprocess against a local HTTP fixture. The Windows integration tests create a unique synthetic Generic Credential, verify Unicode/rotation, authenticate a local stdio request, test worker cancellation, and delete the credential in `finally`. They never access existing tenant credentials. See [baseline provenance](tests/fixtures/README.md).
 
 To validate a real tenant, store its credential under your Windows user, then opt in to the read-only test:
 
@@ -292,7 +295,7 @@ To validate a real tenant, store its credential under your Windows user, then op
 $env:AGILITY_BASE_URL = 'https://your-server/YourAgilityInstance'
 $env:AGILITY_LIVE_ITEM_OID = 'Story:1234'
 $env:AGILITY_LIVE_TEST = '1'
-npm run test:live
+uv run pytest integration/test_live_tenant.py -q -s
 ```
 
 Set `AGILITY_LIVE_EXPECT_PARENT_OID`, `AGILITY_LIVE_EXPECT_UPSTREAM_OID`, or `AGILITY_LIVE_EXPECT_DOWNSTREAM_OID` to verify known relationships. `AGILITY_LIVE_RELATION` checks an additional paged relation. The test reads metadata, the item, and its bounded detail graph; it never changes Agility data. It reports incomplete traversal reasons when permissions or deployment metadata prevent discovery.
@@ -312,7 +315,8 @@ No live Agility tenant is bundled. Run `doctor` against your instance to verify 
 - [Portfolio children and descendants](https://docs.digital.ai/agility/docs/developerlibrary/query-for-progress-of-epic)
 - [Relationship metadata and reciprocals](https://docs.digital.ai/agility/docs/developerlibrary/retrieve-metadata-for-all-system-assets)
 - [Managing upstream and downstream dependencies](https://docs.digital.ai/agility/docs/agility/adding-portfolio-item-dependencies)
-- [Official MCP JavaScript/TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+- [Standalone FastMCP tools and ToolResult](https://gofastmcp.com/servers/tools)
+- [uv documentation](https://docs.astral.sh/uv/)
 - [Windows CREDENTIALW](https://learn.microsoft.com/en-us/windows/win32/api/wincred/ns-wincred-credentialw)
 
 This is an independent integration, not an official Digital.ai product.

@@ -21,7 +21,7 @@ dev = ["pytest>=8", "pytest-asyncio>=1", "ruff>=0.14", "mypy>=1.18", "types-defu
 packages = ["src/agility_mcp"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/agility_mcp", "tests", "integration", "pyproject.toml", "uv.lock", "README.md", "LICENSE", "agility.example.json", ".github"]
+include = ["src/agility_mcp", "tests", "integration", "offline", "scripts/build_offline.py", "pyproject.toml", "uv.lock", "README.md", "LICENSE", "agility.example.json", ".github"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

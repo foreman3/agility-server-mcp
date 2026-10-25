@@ -2,7 +2,31 @@
 
 A Python 3.12+ MCP server for Digital.ai Agility, formerly VersionOne. Runs over stdio using standalone FastMCP 4.1.3. Authentication comes exclusively from **Windows Credential Manager**, using the current Windows user's Generic Credentials.
 
-Requires Windows 10/11 or Windows Server, Python 3.12+, uv, and an Agility instance. No Node.js, PowerShell, C# compiler, or native extension is required by the credential worker. It calls `CredReadW`, `CredWriteW`, `CredDeleteW`, and `CredFree` directly through Python `ctypes` in a short-lived process.
+Requires Windows 10/11 or Windows Server, Python 3.12+, and an Agility instance. uv is an optional installation/launch tool; ordinary Python also works. No Node.js, PowerShell, C# compiler, or native extension is required by the credential worker. It calls `CredReadW`, `CredWriteW`, `CredDeleteW`, and `CredFree` directly through Python `ctypes` in a short-lived process.
+
+## Offline ZIP for Python 3.14 on Windows x64
+
+The `agility-wincred-mcp-0.4.0-offline-win-x64-py314.zip` bundle includes the server and every runtime dependency, including compiled extensions. Python itself is not included. The destination needs **CPython 3.14.x, Windows x64** and access to your internal Agility server; no pip, uv, internet access, or installation is needed. This specific ZIP does not support other Python minor versions or architectures.
+
+Extract the entire ZIP, open PowerShell in its folder, and run:
+
+```powershell
+python -I .\agility-mcp.py --check-bundle
+# Edit agility.json: set baseUrl and, if needed, restEndpoint.
+python -I .\agility-mcp.py credentials set
+python -I .\agility-mcp.py doctor
+python -I .\agility-mcp.py serve
+```
+
+The launcher finds its bundled packages and `agility.json` relative to its own location. `credentials set` saves the token on the destination computer under the current Windows user; the ZIP contains no credentials. An existing matching credential on that computer can be reused. Use `mcp-host.example.json` for a host configuration with absolute Python and launcher paths. See the ZIP's `README.txt` for certificate settings and other details.
+
+To rebuild on a connected Windows machine, using a Windows x64 Python 3.14 interpreter and uv:
+
+```powershell
+python scripts/build_offline.py --python C:\Path\To\Python314\python.exe
+```
+
+The builder uses `uv.lock`, checks dependency download hashes, retains package licenses, and writes the ZIP and its SHA-256 under `dist/`. Its `--offline` option uses an already populated uv cache. Only the build machine needs uv. The bundled `--check-bundle` verifies file hashes, dependency compatibility, and native imports without network or credential access.
 
 ## Quick start from this checkout
 

@@ -1,0 +1,114 @@
+[
+  {
+    "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Assets total=\"0\"/>",
+    "xml": {
+      "?xml": {
+        "@version": "1.0",
+        "@encoding": "UTF-8"
+      },
+      "Assets": {
+        "@total": "0"
+      }
+    },
+    "assets": {
+      "assets": [],
+      "total": 0
+    }
+  },
+  {
+    "text": "<Asset/>",
+    "xml": {
+      "Asset": [
+        ""
+      ]
+    },
+    "assets": {
+      "assets": [
+        {
+          "attributes": {},
+          "relations": {}
+        }
+      ]
+    }
+  },
+  {
+    "text": "<Assets>\n <Asset id=\"Story:1\"/>\n</Assets>",
+    "xml": {
+      "Assets": {
+        "Asset": [
+          {
+            "@id": "Story:1"
+          }
+        ],
+        "#text": "\n \n"
+      }
+    },
+    "assets": {
+      "assets": [
+        {
+          "oid": "Story:1",
+          "attributes": {},
+          "relations": {}
+        }
+      ]
+    }
+  },
+  {
+    "text": "<Asset id=\"Story:1\"><Attribute name=\"X\"><Value/></Attribute></Asset>",
+    "xml": {
+      "Asset": [
+        {
+          "Attribute": [
+            {
+              "Value": [
+                ""
+              ],
+              "@name": "X"
+            }
+          ],
+          "@id": "Story:1"
+        }
+      ]
+    },
+    "assets": {
+      "assets": [
+        {
+          "oid": "Story:1",
+          "attributes": {
+            "X": [
+              ""
+            ]
+          },
+          "relations": {}
+        }
+      ]
+    }
+  },
+  {
+    "text": "<Asset id=\"Story:1\"><Attribute name=\"X\"> hi \n </Attribute></Asset>",
+    "xml": {
+      "Asset": [
+        {
+          "Attribute": [
+            {
+              "#text": " hi \n ",
+              "@name": "X"
+            }
+          ],
+          "@id": "Story:1"
+        }
+      ]
+    },
+    "assets": {
+      "assets": [
+        {
+          "oid": "Story:1",
+          "attributes": {
+            "X": " hi \n "
+          },
+          "relations": {}
+        }
+      ]
+    }
+  }
+]

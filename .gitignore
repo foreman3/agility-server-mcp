@@ -4,3 +4,10 @@ coverage/
 agility.local.json
 *.log
 .package-validation/
+.venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+.codex-attachments/

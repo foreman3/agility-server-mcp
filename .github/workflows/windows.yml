@@ -11,20 +11,33 @@ permissions:
 jobs:
   test:
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.12', '3.14']
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
-          node-version: '22'
-          cache: npm
-      - run: npm ci
-      - run: npm run check
-      - run: npm test
-      - run: npm run test:windows
-      - name: Validate packed npx executable
+          version: '0.13.5'
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run --locked ruff check .
+      - run: uv run --locked ruff format --check .
+      - run: uv run --locked mypy
+      - run: uv run --locked pytest -q
+      - run: uv run --locked pytest integration/test_windows_credentials.py -q
+      - run: uv build
+      - name: Validate wheel and sdist through uvx
         shell: pwsh
         run: |
-          $archive = (npm pack --json | ConvertFrom-Json)[0].filename
-          if (-not $archive) { throw 'npm pack did not produce an archive.' }
-          npx --yes --package ".\$archive" agility-mcp --version
-          if ($LASTEXITCODE -ne 0) { throw 'Packed npx command failed.' }
+          uvx --from "$((Resolve-Path dist/agility_wincred_mcp-0.4.0-py3-none-any.whl).Path)" agility-mcp --version
+          if ($LASTEXITCODE -ne 0) { throw 'Wheel uvx launch failed.' }
+          uvx --from "$((Resolve-Path dist/agility_wincred_mcp-0.4.0.tar.gz).Path)" agility-mcp --help
+          if ($LASTEXITCODE -ne 0) { throw 'Source distribution uvx launch failed.' }
+      - name: Validate pinned Git revision through uvx
+        shell: pwsh
+        run: |
+          uvx --from "git+https://github.com/${{ github.repository }}.git@${{ github.sha }}" agility-mcp --version
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Git uvx launch failed.' }

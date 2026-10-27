@@ -6,7 +6,7 @@ Requires Windows 10/11 or Windows Server, Python 3.12+, and an Agility instance.
 
 ## Offline ZIP for Python 3.14 on Windows x64
 
-The `agility-wincred-mcp-0.4.0-offline-win-x64-py314.zip` bundle includes the server and every runtime dependency, including compiled extensions. Python itself is not included. The destination needs **CPython 3.14.x, Windows x64** and access to your internal Agility server; no pip, uv, internet access, or installation is needed. This specific ZIP does not support other Python minor versions or architectures.
+The `agility-wincred-mcp-0.4.1-offline-win-x64-py314.zip` bundle includes the server and every runtime dependency, including compiled extensions. Python itself is not included. The destination needs **CPython 3.14.x, Windows x64** and access to your internal Agility server; no pip, uv, internet access, or installation is needed. This specific ZIP does not support other Python minor versions or architectures.
 
 Extract the entire ZIP, open PowerShell in its folder, and run:
 
@@ -46,13 +46,13 @@ Run the MCP host under the **same Windows user** as credential setup. A Linux, W
 
 ## Run with uvx
 
-Version 0.4.0 is not published to PyPI. Build a wheel from this checkout:
+Version 0.4.1 is not published to PyPI. Build a wheel from this checkout:
 
 ```powershell
 uv build
-uvx --from .\dist\agility_wincred_mcp-0.4.0-py3-none-any.whl agility-mcp --version
-uvx --from .\dist\agility_wincred_mcp-0.4.0-py3-none-any.whl agility-mcp credentials set --base-url https://your-server/YourAgilityInstance
-uvx --from .\dist\agility_wincred_mcp-0.4.0-py3-none-any.whl agility-mcp doctor --base-url https://your-server/YourAgilityInstance
+uvx --from .\dist\agility_wincred_mcp-0.4.1-py3-none-any.whl agility-mcp --version
+uvx --from .\dist\agility_wincred_mcp-0.4.1-py3-none-any.whl agility-mcp credentials set --base-url https://your-server/YourAgilityInstance
+uvx --from .\dist\agility_wincred_mcp-0.4.1-py3-none-any.whl agility-mcp doctor --base-url https://your-server/YourAgilityInstance
 ```
 
 Or use a full, reviewed Git commit SHA containing the Python migration:
@@ -72,7 +72,7 @@ A Windows MCP host that uses `mcpServers` can launch the built wheel:
   "mcpServers": {
     "agility": {
       "command": "uvx",
-      "args": ["--python", "3.12", "--from", "C:\\path\\to\\agility_wincred_mcp-0.4.0-py3-none-any.whl", "agility-mcp", "serve"],
+      "args": ["--python", "3.12", "--from", "C:\\path\\to\\agility_wincred_mcp-0.4.1-py3-none-any.whl", "agility-mcp", "serve"],
       "env": {
         "AGILITY_BASE_URL": "https://your-server/YourAgilityInstance"
       }
@@ -87,7 +87,7 @@ Use an absolute wheel path visible to the host. For a pinned source install, rep
 
 Replace the Node/npx host launch command with uvx. JSON configuration keys, CLI flags, `AGILITY_*` variables, precedence, tool names, camelCase arguments, and result envelopes are preserved. Existing URL-derived credential targets and explicitly configured targets are unchanged; **you do not need to re-enter existing credentials**. Both credential implementations were checked with synthetic Unicode credentials in each direction.
 
-Replace `NODE_EXTRA_CA_CERTS` with `SSL_CERT_FILE` pointing to a PEM bundle containing the certificate authorities needed by your instance. Python HTTPX uses its default CA bundle unless `SSL_CERT_FILE` or `SSL_CERT_DIR` overrides it; it does not automatically inherit Node's certificate settings. See [HTTPX certificate configuration](https://www.python-httpx.org/advanced/ssl/). HTTPX respects `HTTP_PROXY`, `HTTPS_PROXY`, `ALL_PROXY`, and `NO_PROXY`; configure `NO_PROXY` for local development fixtures. TLS verification stays enabled.
+Replace `NODE_EXTRA_CA_CERTS` with `SSL_CERT_FILE` pointing to a PEM bundle containing the certificate authorities needed by your instance. Python HTTPX uses its default CA bundle unless `SSL_CERT_FILE` or `SSL_CERT_DIR` overrides it; it does not automatically inherit Node's certificate settings. See [HTTPX certificate configuration](https://www.python-httpx.org/advanced/ssl/). HTTPX respects `HTTP_PROXY`, `HTTPS_PROXY`, `ALL_PROXY`, and `NO_PROXY`; configure `NO_PROXY` for local development fixtures. TLS verification is enabled by default and can be disabled with `verifyTls: false`.
 
 ## Configuration
 
@@ -106,6 +106,7 @@ Configuration precedence: CLI flags → environment → optional JSON file → d
 | `maxResponseBytes` | `AGILITY_MAX_RESPONSE_BYTES` | 4 MiB decompressed; range 1 KiB–32 MiB |
 | `maxConcurrency` | `AGILITY_MAX_CONCURRENCY` | `4`; range 1–16 |
 | `allowHttp` | `AGILITY_ALLOW_HTTP` | `false`; development only |
+| `verifyTls` | `AGILITY_VERIFY_TLS` | `true`; set to `false` to disable TLS certificate and hostname verification |
 
 The corresponding flags use kebab case, e.g. `--base-url`, `--max-response-bytes`, `--enable-writes`. Boolean environment variables accept exactly `true` or `false`; boolean CLI flags enable the option without a value.
 
@@ -123,7 +124,18 @@ Example configuration:
 
 Agility recommends bearer access tokens. For an instance configured with Windows Integrated Authentication, token-based REST access uses **`rest-1.oauth.v1`**. The credential source is the Windows vault; this server does **not** implement NTLM/Kerberos negotiation. Basic authentication is optional for deployments that support it; it is not supported for on-premises Windows Integrated Authentication or on-demand SSO. `query.v1` has no configurable OAuth REST variant; if your deployment rejects it, use `agility_list_assets`, which uses the configured REST endpoint.
 
-Use the application base URL, not `/Default.aspx`, `/Account.mvc/Login`, or an API endpoint URL. HTTPS is required unless explicitly allowing HTTP. For enterprise certificate authorities, set `SSL_CERT_FILE` to a trusted PEM certificate bundle as described in the migration section. HTTPX supports standard proxy environment variables. Never disable TLS verification.
+Use the application base URL, not `/Default.aspx`, `/Account.mvc/Login`, or an API endpoint URL. HTTPS is required unless explicitly allowing HTTP. For enterprise certificate authorities, set `SSL_CERT_FILE` to a trusted PEM certificate bundle as described in the migration section. HTTPX supports standard proxy environment variables.
+
+For a self-signed server, you can disable TLS verification in your JSON configuration (including the offline bundle's `agility.json`):
+
+```json
+{
+  "baseUrl": "https://your-server/YourAgilityInstance",
+  "verifyTls": false
+}
+```
+
+The same setting is available as `AGILITY_VERIFY_TLS=false` or `--verify-tls false`, using the normal configuration precedence. It applies to MCP tools, `doctor`, and the offline launcher. Setting it to `false` disables certificate-chain and hostname checks; HTTPS traffic remains encrypted. Set it back to `true` to enable verification.
 
 ## Tools
 

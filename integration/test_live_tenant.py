@@ -3,10 +3,9 @@
 import os
 import sys
 
-import httpx
 import pytest
 
-from agility_mcp.client import AgilityClient
+from agility_mcp.client import AgilityClient, create_http_client
 from agility_mcp.config import load_config
 from agility_mcp.credentials import WindowsCredentialStore
 from agility_mcp.items import canonical_oid
@@ -22,7 +21,7 @@ async def test_live_readonly():
     oid = os.environ["AGILITY_LIVE_ITEM_OID"]
     oid_path(oid, False)
     config = load_config({"enableWrites": False, "allowOperations": []})
-    async with httpx.AsyncClient(timeout=None, follow_redirects=False) as http:
+    async with create_http_client(config) as http:
         client = AgilityClient(config, WindowsCredentialStore(), http=http)
         assert (await client.metadata(assetType=oid.split(":")[0]))["AssetType"]
         result = await client.get(oid=oid, select=["Name", "Number"])

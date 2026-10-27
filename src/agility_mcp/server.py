@@ -5,14 +5,13 @@ from contextlib import asynccontextmanager
 from copy import deepcopy
 from typing import Any
 
-import httpx
 from fastmcp import FastMCP
 from fastmcp.tools import Tool, ToolResult
 from mcp_types import TextContent, ToolAnnotations
 from pydantic import PrivateAttr, ValidationError
 
 from . import __version__
-from .client import AgilityClient, dumps
+from .client import AgilityClient, create_http_client, dumps
 from .config import Config
 from .credentials import CredentialStore, WindowsCredentialStore
 from .errors import AgilityError
@@ -59,7 +58,7 @@ def create_server(
             finally:
                 state.clear()
         else:
-            async with httpx.AsyncClient(timeout=None, follow_redirects=False) as http:
+            async with create_http_client(config) as http:
                 state["client"] = AgilityClient(config, store, http=http)
                 try:
                     yield state
@@ -81,6 +80,7 @@ def create_server(
                 "baseUrl": config.baseUrl,
                 "restEndpoint": config.restEndpoint,
                 "authMode": config.authMode,
+                "verifyTls": config.verifyTls,
                 "credentialTarget": config.credentialTarget,
                 "credential": await store.status(config.credentialTarget),
                 "writesEnabled": config.enableWrites,

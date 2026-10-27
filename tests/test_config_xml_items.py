@@ -20,6 +20,7 @@ def test_config_defaults_and_stable_targets():
     b = load_config({"baseUrl": "https://example.test/Agility"}, {})
     assert a.credentialTarget == b.credentialTarget
     assert not a.enableWrites and a.authMode == "token" and not a.allowOperations
+    assert a.verifyTls is True
     assert (
         a.credentialTarget
         != load_config({"baseUrl": "https://example.test/Other"}, {}).credentialTarget
@@ -75,6 +76,22 @@ def test_config_precedence_validation_and_cli(tmp_path):
     path.write_text('{"secret":"private"}')
     with pytest.raises(AgilityError, match="Unknown configuration keys"):
         load_config({"config": str(path)}, {})
+
+
+def test_tls_configuration_precedence_and_cli(tmp_path):
+    path = tmp_path / "agility.json"
+    path.write_text(json.dumps({"baseUrl": "https://example.test", "verifyTls": False}))
+    assert load_config({"config": str(path)}, {}).verifyTls is False
+    assert load_config({"config": str(path)}, {"AGILITY_VERIFY_TLS": "true"}).verifyTls is True
+    options, _ = parse_args(["--config", str(path), "--verify-tls", "false"])
+    assert load_config(options, {"AGILITY_VERIFY_TLS": "true"}).verifyTls is False
+    assert load_config({"baseUrl": "https://example.test", "verifyTls": True}, {}).verifyTls
+
+
+@pytest.mark.parametrize("value", [None, 0, 1, "yes", "False", {}, []])
+def test_invalid_tls_configuration_cannot_disable_verification(value):
+    with pytest.raises(AgilityError, match="verifyTls must be true or false"):
+        load_config({"baseUrl": "https://example.test", "verifyTls": value}, {})
 
 
 def test_xml_values_collections_relations():

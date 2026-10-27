@@ -6,10 +6,8 @@ import json
 import re
 import sys
 
-import httpx
-
 from . import __version__
-from .client import AgilityClient
+from .client import AgilityClient, create_http_client
 from .config import load_config, parse_args
 from .credentials import WindowsCredentialStore
 from .errors import AgilityError
@@ -35,6 +33,7 @@ Options (also supported in AGILITY_* environment variables or JSON config):
   --max-response-bytes NUMBER   HTTP response limit (default: 4194304)
   --max-concurrency NUMBER      Concurrent HTTP requests (default: 4)
   --allow-http                 Allow HTTP for trusted development only
+  --verify-tls true|false        Verify TLS certificates (default: true)
   --help                       Show usage
   --version                    Show version
 
@@ -90,7 +89,7 @@ async def run(args: list[str]) -> None:
     if command == "doctor":
         if not (await store.status(config.credentialTarget))["found"]:
             raise AgilityError("Credential not found. Run credentials set first.")
-        async with httpx.AsyncClient(timeout=None, follow_redirects=False) as http:
+        async with create_http_client(config) as http:
             client = AgilityClient(config, store, http=http)
             await client.list(assetType="Scope", select=["Name"], pageSize=1)
         sys.stderr.write(f"Agility authentication and REST query succeeded for {config.baseUrl}\n")

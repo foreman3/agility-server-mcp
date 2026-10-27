@@ -69,8 +69,12 @@ who stored the credential. Move the folder later by updating the script path.
 Certificates and proxies
 -------------------------
 For an internal certificate authority, provide your organization's PEM trust
-bundle through SSL_CERT_FILE. HTTPS_PROXY and NO_PROXY are supported. Keep TLS
-verification enabled. See SERVER-README.md for all configuration and tools.
+bundle through SSL_CERT_FILE. HTTPS_PROXY and NO_PROXY are supported.
+TLS verification is enabled by default. To disable certificate-chain and
+hostname checks for a self-signed server, set "verifyTls": false in agility.json.
+You can also set AGILITY_VERIFY_TLS=false or pass --verify-tls false.
+The option applies to both doctor and serve. Set it to true to enable
+verification again. See SERVER-README.md for all configuration and tools.
 
 Contents and provenance
 -------------------------

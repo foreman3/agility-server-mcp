@@ -24,6 +24,7 @@ FIELDS = {
     "enable-writes": "enableWrites",
     "allow-operations": "allowOperations",
     "allow-http": "allowHttp",
+    "verify-tls": "verifyTls",
 }
 
 
@@ -117,6 +118,7 @@ class Config:
     baseUrl: str
     credentialTarget: str
     allowHttp: bool = False
+    verifyTls: bool = True
     authMode: str = "token"
     restEndpoint: str = "rest-1.v1"
     enableWrites: bool = False
@@ -153,6 +155,9 @@ def load_config(
             environment[key] = env[name]
     raw = file | environment | dict(options)
     allow_http = boolean(raw.get("allowHttp"), "allowHttp")
+    if raw.get("verifyTls", True) is None:
+        raise AgilityError("verifyTls must be true or false.")
+    verify_tls = boolean(raw.get("verifyTls", True), "verifyTls")
     base = normalize_base_url(raw.get("baseUrl"), allow_http)
     auth = raw.get("authMode", "token")
     endpoint = raw.get("restEndpoint", "rest-1.v1")
@@ -195,6 +200,7 @@ def load_config(
         baseUrl=base,
         credentialTarget=target,
         allowHttp=allow_http,
+        verifyTls=verify_tls,
         authMode=auth,
         restEndpoint=endpoint,
         enableWrites=writes,

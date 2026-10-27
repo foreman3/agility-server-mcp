@@ -39,6 +39,11 @@ def dumps(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
 
 
+def create_http_client(config: Config) -> httpx.AsyncClient:
+    """Apply the same transport configuration to server and diagnostic requests."""
+    return httpx.AsyncClient(timeout=None, follow_redirects=False, verify=config.verifyTls)
+
+
 class Limiter:
     def __init__(self, maximum: int):
         self.semaphore = asyncio.Semaphore(maximum)

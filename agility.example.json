@@ -2,6 +2,7 @@
   "baseUrl": "https://your-server/YourAgilityInstance",
   "authMode": "token",
   "restEndpoint": "rest-1.v1",
+  "verifyTls": true,
   "enableWrites": false,
   "allowOperations": [],
   "timeoutMs": 30000,

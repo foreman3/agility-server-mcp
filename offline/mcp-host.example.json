@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "agility": {
+      "command": "C:\\Path\\To\\Python314\\python.exe",
+      "args": ["-I", "D:\\Agility\\agility-mcp.py", "serve"]
+    }
+  }
+}
